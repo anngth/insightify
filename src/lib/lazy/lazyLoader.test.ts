@@ -228,6 +228,20 @@ describe("LazyRegistry", () => {
   });
 
   describe("Schema Validation", () => {
+    it("should enforce the module limit when deserializing chunk configs", () => {
+      const registry = new LazyRegistry();
+      const modules = Array.from({ length: 1024 }, (_, index) => `module-${index}`);
+      const atLimit = { name: "at-limit", modules, priority: 1 };
+      const aboveLimit = {
+        name: "above-limit",
+        modules: [...modules, "extra-module"],
+        priority: 2,
+      };
+
+      expect(registry.deserializeChunkConfigs(JSON.stringify([atLimit, aboveLimit])))
+        .toEqual([atLimit]);
+    });
+
     it("should validate correct chunk config", () => {
       const validConfig: ChunkConfig = {
         name: "test-chunk",

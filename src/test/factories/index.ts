@@ -69,7 +69,7 @@ export function createFactory<T extends Record<string, unknown>>(
  * User schema and factory
  */
 export const UserSchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   name: z.string().min(1),
   email: z.string().email(),
   role: z.enum(["admin", "user", "viewer"]),
@@ -122,13 +122,13 @@ export const metricFactory = createFactory<Metric>(
  * Activity schema and factory
  */
 export const ActivitySchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   type: z.enum(["create", "update", "delete", "view"]),
-  userId: z.string().uuid(),
+  userId: z.guid(),
   resourceId: z.string(),
   resourceType: z.string(),
   timestamp: z.number(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type Activity = z.infer<typeof ActivitySchema>;
@@ -170,7 +170,7 @@ export const chartDataPointFactory = createFactory<ChartDataPoint>(
  * Notification schema and factory
  */
 export const NotificationSchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   title: z.string(),
   message: z.string(),
   severity: z.enum(["info", "warning", "success", "error"]),
@@ -196,7 +196,7 @@ export const notificationFactory = createFactory<Notification>(
  * Error Log Entry factory (matches errorLogger types)
  */
 export const ErrorLogEntrySchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   timestamp: z.number(),
   error: z.object({
     name: z.string(),
@@ -204,7 +204,7 @@ export const ErrorLogEntrySchema = z.object({
     stack: z.string().optional(),
   }),
   componentStack: z.string().optional(),
-  context: z.record(z.unknown()).optional(),
+  context: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type ErrorLogEntry = z.infer<typeof ErrorLogEntrySchema>;
