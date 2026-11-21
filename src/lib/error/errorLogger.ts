@@ -15,11 +15,11 @@ export const ErrorDetailsSchema = z.object({
  * Schema for a single error log entry
  */
 export const ErrorLogEntrySchema = z.object({
-  id: z.string().uuid(),
+  id: z.guid(),
   timestamp: z.number(),
   error: ErrorDetailsSchema,
   componentStack: z.string().optional(),
-  context: z.record(z.unknown()).optional(),
+  context: z.record(z.string(), z.unknown()).optional(),
 });
 
 export type ErrorDetails = z.infer<typeof ErrorDetailsSchema>;

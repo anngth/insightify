@@ -1,12 +1,14 @@
 import React, { lazy, Suspense, ComponentType } from "react";
 import { z } from "zod";
 
+const MAX_MODULES_PER_CHUNK = 1024;
+
 /**
  * Schema for chunk configuration
  */
 export const ChunkConfigSchema = z.object({
   name: z.string(),
-  modules: z.array(z.string()),
+  modules: z.array(z.string()).max(MAX_MODULES_PER_CHUNK),
   priority: z.number().int(),
 });
 
